@@ -236,3 +236,13 @@ main { flex: 1; width: 100%; max-width: 1040px; margin: 0 auto; padding: 24px 16
 .level-card:not(.locked):hover { border-color: var(--accent); }
 @media (pointer: coarse) { .game-toast { top: 46px; bottom: auto; font-size: .82rem; } }
 @media (max-width: 700px) { .game-overlay { position: fixed; inset: 0; aspect-ratio: auto; max-height: none; z-index: 50; } }
+
+/* Lesson menu on phones: a swipeable row of chips that scrolls away with the page (not sticky). */
+@media (max-width: 760px) {
+  .toc { position: static; display: flex; gap: 6px; overflow-x: auto; padding: 8px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .toc::-webkit-scrollbar { display: none; }
+  .toc a { flex: none; white-space: nowrap; border: 1px solid var(--border); border-radius: 999px; padding: 6px 12px; font-size: .88rem; }
+  .toc a.active { border-color: var(--accent); }
+  .toc .check { width: auto; }
+  .toc .check:empty { display: none; }
+}

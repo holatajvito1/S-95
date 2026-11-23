@@ -120,6 +120,7 @@
           ${next ? `<a class="btn" href="#/learn/${next.id}">${next.title} →</a>` : ""}
         </div>
       </article></div>`;
+    const act = app.querySelector(".toc a.active"); if (act && act.scrollIntoView && window.innerWidth <= 760) act.scrollIntoView({ inline: "center", block: "nearest" });
     $("#mark").onclick = () => { DB.lessons[topic] = Date.now(); save(); $("#mark").textContent = "Read ✓"; };
   };
 

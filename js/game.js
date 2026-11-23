@@ -68,7 +68,7 @@ S95.Game = (function () {
     while (x < W - 22) {
       const roll = r();
       if (roll < 0.22 && x > 18) {                       // gap
-        const gw = 2 + (r() < 0.25 + d * 0.04 ? 1 : 0);
+        const gw = 2 + (r() < 0.2 + d * 0.02 ? 1 : 0);
         for (let i = 0; i < gw; i++) h[x + i] = -1;
         x += gw;
         for (let i = 0; i < 4; i++) h[x + i] = cur; x += 4;
@@ -118,10 +118,10 @@ S95.Game = (function () {
       for (let dc = 0; dc < 10; dc++) { const cc = c + dc; if (h[cc] > 0 && grid[h[cc] - 2][cc] === ".") { pages.push({ x: cc * T + 16, y: (h[cc] - 2) * T + 8, got: false }); break; } }
     }
     // Smoke puff enemies
-    const ne = Math.min(4 + d, 12) + (level.topic ? 0 : 4);
+    const ne = Math.min(4 + Math.floor(d / 2), 8) + (level.topic ? 0 : 3);
     for (let k = 0; k < ne; k++) {
       const c = Math.floor(22 + r() * (W - 40));
-      if (h[c] > 0 && h[c - 1] === h[c] && h[c + 1] === h[c]) enemies.push({ x: c * T + 4, y: h[c] * T - 26, w: 26, h: 26, vx: -(45 + d * 5) * (r() < 0.5 ? 1 : -1), dead: 0, alive: true });
+      if (h[c] > 0 && h[c - 1] === h[c] && h[c + 1] === h[c]) enemies.push({ x: c * T + 4, y: h[c] * T - 26, w: 26, h: 26, vx: -(45 + d * 2) * (r() < 0.5 ? 1 : -1), dead: 0, alive: true });
     }
     return { W, grid, coins, pages, enemies, blocks, exitX: (W - 6) * T, exitY: 14 * T };
   }

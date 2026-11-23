@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>S-95 Study Coach</title>
+  <meta name="description" content="Study, practice tests, and hands-on panel simulations for the FDNY Certificate of Fitness S-95 (Supervision of Fire Alarm Systems) exam.">
+  <meta name="theme-color" content="#b3261e">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#/">
+      <span class="brand-mark" aria-hidden="true">S‑95</span>
+      <span class="brand-text">Study Coach</span>
+    </a>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false">☰</button>
+    <nav class="nav" aria-label="Main">
+      <a href="#/play" data-nav="play">🎮 Play</a>
+      <a href="#/learn" data-nav="learn">Learn</a>
+      <a href="#/flashcards" data-nav="flashcards">Flashcards</a>
+      <a href="#/practice" data-nav="practice">Practice</a>
+      <a href="#/exam" data-nav="exam">Exam Sim</a>
+      <a href="#/sim" data-nav="sim">Panel Sim</a>
+      <a href="#/progress" data-nav="progress">Progress</a>
+    </nav>
+  </header>
+
+  <main id="app" tabindex="-1"></main>
+
+  <footer class="footer">
+    <p>Independent study aid. Not affiliated with or endorsed by the FDNY. Always study the current
+      <strong>FDNY S-95 Notice of Exam &amp; Study Material</strong> before your test. Content version: <span id="content-version"></span>.</p>
+  </footer>
+
+  <script src="js/data/lessons.js"></script>
+  <script src="js/data/questions.js"></script>
+  <script src="js/data/scenarios.js"></script>
+  <script src="js/panel.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

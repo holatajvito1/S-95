@@ -44,4 +44,13 @@ S.gameLevels().forEach(lv => {
   for (let c = 0; c < L.W; c++) if (isGap(c)) for (let r = 0; r < 16; r++) if (L.grid[r][c] === "=" ) { fail(`${lv.name}: beam over gap at col ${c}`); break; }
   L.blocks.forEach(b => { for (let k = -3; k <= 3; k++) if (isGap(b.c + k)) fail(`${lv.name}: gap near alarm block col ${b.c}`); });
 });
+// Overhead tiles (beams/blocks) must not sit within 2 columns of a ground height change (head-bump trap).
+S.gameLevels().forEach(lv => {
+  const L = S.Game.buildLevel(lv, lv.idx + 1);
+  const top = c => { for (let r = 0; r < 17; r++) if (L.grid[r][c] === "#") return r; return -1; };
+  for (let c = 2; c < L.W - 2; c++) for (let r = 0; r < 16; r++) if ("=AU".includes(L.grid[r][c])) {
+    for (let k = -2; k <= 2; k++) if (top(c + k) !== top(c)) { fail(`${lv.name}: overhead tile near step/gap at col ${c}`); break; }
+    break;
+  }
+});
 if (errors) process.exit(1);

@@ -100,7 +100,7 @@ S95.Game = (function () {
 
     // Alarm blocks: spread evenly along the course on safe flat ground
     const n = level.blocks;
-    const okCol = c => c > 8 && c < W - 12 && h[c] > 0 && h[c - 1] === h[c] && h[c + 1] === h[c] && [-3, -2, 2, 3].every(k => h[c + k] > 0) && grid[h[c] - 4] && grid[h[c] - 4][c] === "." && grid[h[c] - 5][c] === "." && plats.every(p => !(c >= p.x - 1 && c <= p.x + p.len));
+    const okCol = c => c > 8 && c < W - 12 && h[c] > 0 && h[c - 1] === h[c] && h[c + 1] === h[c] && [-3, -2, -1, 1, 2, 3].every(k => h[c + k] === h[c]) && grid[h[c] - 4] && grid[h[c] - 4][c] === "." && grid[h[c] - 5][c] === "." && plats.every(p => !(c >= p.x - 1 && c <= p.x + p.len));
     for (let k = 0; k < n; k++) {
       const a = Math.floor(16 + (W - 34) * k / n), b = Math.floor(16 + (W - 34) * (k + 1) / n);
       const cand = []; for (let c = a; c < b; c++) if (okCol(c)) cand.push(c);

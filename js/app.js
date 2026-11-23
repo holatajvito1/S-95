@@ -405,32 +405,37 @@
   Views.play = function (lvl) {
     const levels = S95.gameLevels();
     const unlocked = k => k === 0 || (DB.game[k - 1] && DB.game[k - 1].stars) || DB.game.unlockAll;
-    if (lvl === undefined || !levels[+lvl] || !unlocked(+lvl)) {
+    if (lvl === undefined || !levels[+lvl] || !(unlocked(+lvl) || (DB.game.save && DB.game.save.level === +lvl))) {
       const totalStars = levels.reduce((s, l) => s + ((DB.game[l.idx] || {}).stars || 0), 0);
       app.innerHTML = `<div class="row"><h1 style="margin:0">🎮 Alarm Run</h1><span class="spacer"></span><span class="tag">★ ${totalStars} / ${levels.length * 3}</span><button class="btn sm" id="snd"></button></div>
+        ${(() => { const sv = DB.game.save; if (!sv || !levels[sv.level]) return ""; const l = levels[sv.level]; let just = false; try { just = sessionStorage.getItem("s95.justSaved") === "1"; sessionStorage.removeItem("s95.justSaved"); } catch (e) {}
+          return `<div class="card save-banner"><div class="row"><span class="icon">💾</span><div><b>${just ? "✅ Game saved" : "Saved run"}: ${l.name}, ${l.title}</b><br><span class="muted small">${sv.st.hearts} ♥ · ${sv.st.qRight}/${l.blocks} answered · score ${sv.st.score} · ${new Date(sv.savedAt).toLocaleString()}</span></div><span class="spacer"></span><a class="btn primary" href="#/play/${l.idx}">▶ Continue</a><button class="btn" id="discard">Discard</button></div></div>`; })()}
         <p class="muted">Climb the building one floor at a time. Each floor is a topic from the S-95 booklet. Bump the red <b>🔔 alarm blocks</b> from below to answer questions, stomp smoke puffs, and reach the EXIT. Clear a floor to unlock the next one.</p>
         <div class="grid grid-3">${levels.map(l => { const r = DB.game[l.idx] || {}; const u = unlocked(l.idx); return `
           <${u ? `a href="#/play/${l.idx}"` : "div"} class="card feature level-card ${u ? "" : "locked"}">
             <div class="row"><span class="icon">${u ? l.icon : "🔒"}</span><span class="spacer"></span><span class="stars-sm">${"★".repeat(r.stars || 0)}${"☆".repeat(3 - (r.stars || 0))}</span></div>
-            <h3>${l.name}: ${l.title}</h3><span class="muted small">${l.blocks} alarm blocks${r.best ? ` · Best ${r.best}` : ""}</span>
+            <h3>${l.name}: ${l.title}</h3><span class="muted small">${l.blocks} alarm blocks${r.best ? ` · Best ${r.best}` : ""}${DB.game.save && DB.game.save.level === l.idx ? ' · <b style="color:var(--accent)">💾 saved</b>' : ""}</span>
           </${u ? "a" : "div"}>`; }).join("")}</div>
         <p class="small muted" style="margin-top:16px">Want to skip ahead? <button class="btn sm" id="unlock">${DB.game.unlockAll ? "Re-lock floors" : "Unlock all floors"}</button></p>`;
       sndBtn();
       $("#unlock").onclick = () => { DB.game.unlockAll = !DB.game.unlockAll; save(); route(); };
+      if ($("#discard")) $("#discard").onclick = () => { if (confirm("Discard your saved run?")) { delete DB.game.save; save(); route(); } };
       return;
     }
     const level = levels[+lvl];
     app.innerHTML = `<div class="row" style="margin-bottom:10px"><a class="btn sm" href="#/play">← Floors</a><b>${level.name}: ${level.title}</b><span class="spacer"></span><button class="btn sm" id="snd"></button></div><div id="game"></div>`;
     sndBtn();
     const inst = S95.Game.mount($("#game"), level, {
+      onSave(snap) { DB.game.save = snap; save(); },
+      onClearSave() { if (DB.game.save && DB.game.save.level === level.idx) { delete DB.game.save; save(); } },
       onComplete(res) {
         const r = DB.game[level.idx] || {};
         DB.game[level.idx] = { stars: Math.max(r.stars || 0, res.stars), best: Math.max(r.best || 0, res.score) }; save();
       },
       onNext() { location.hash = levels[level.idx + 1] ? `#/play/${level.idx + 1}` : "#/exam"; },
       onRestart() { route(); },
-      onQuit() { location.hash = "#/play"; }
-    });
+      onQuit(why) { if (why === "saved") sessionStorage.setItem("s95.justSaved", "1"); location.hash = "#/play"; }
+    }, DB.game.save);
     cleanup = () => inst.destroy();
   };
 

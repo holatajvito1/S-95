@@ -246,3 +246,25 @@ main { flex: 1; width: 100%; max-width: 1040px; margin: 0 auto; padding: 24px 16
   .toc .check { width: auto; }
   .toc .check:empty { display: none; }
 }
+
+/* ---------- Alarm Run: modern UI chrome ---------- */
+.game-wrap { border-radius: 18px; box-shadow: 0 18px 50px rgba(10,15,30,.35), 0 0 0 1px rgba(255,255,255,.06) inset; }
+.game-btns { position: absolute; top: 1.8%; right: 1.2%; display: flex; gap: 6px; z-index: 2; }
+.gbtn { font: 600 .85rem system-ui, sans-serif; color: #fff; background: rgba(12,16,24,.55); border: 1px solid rgba(255,255,255,.18); border-radius: 999px; padding: 6px 12px; cursor: pointer; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); transition: background .15s, transform .1s; }
+.gbtn:hover { background: rgba(12,16,24,.8); }
+.gbtn:active { transform: scale(.96); }
+.game-overlay { z-index: 5; background: rgba(8,12,22,.5); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); animation: fadeIn .18s ease-out; }
+.go-card { border-radius: 18px; border: 1px solid rgba(255,255,255,.08); animation: popIn .22s cubic-bezier(.2,.9,.3,1.2); }
+@keyframes fadeIn { from { opacity: 0; } }
+@keyframes popIn { from { transform: translateY(12px) scale(.97); opacity: 0; } }
+.game-toast { display: flex; flex-direction: column; gap: 2px; background: rgba(18,22,32,.82); color: #f3f5f8; border: 1px solid rgba(255,255,255,.12); border-left: 4px solid #7ee0c3; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-radius: 14px; }
+.game-toast b { color: #7ee0c3; }
+.game-toast.show { animation: toastIn .3s cubic-bezier(.2,.9,.3,1.2); }
+@keyframes toastIn { from { transform: translateY(14px); opacity: 0; } }
+.stars .star { display: inline-block; color: rgba(127,127,127,.35); }
+.stars .star.on { color: #f4b400; animation: starPop .5s cubic-bezier(.2,.9,.3,1.4) both; text-shadow: 0 0 18px rgba(244,180,0,.6); }
+@keyframes starPop { from { transform: scale(0) rotate(-40deg); } }
+.save-banner { border-color: var(--accent); background: var(--accent-soft); margin-bottom: 16px; }
+.save-banner .icon { font-size: 1.6rem; }
+@media (max-width: 560px) { .gbtn { padding: 4px 9px; font-size: .75rem; } }
+@media (prefers-reduced-motion: reduce) { .game-overlay, .go-card, .game-toast.show, .stars .star.on { animation: none; } }
